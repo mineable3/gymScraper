@@ -7,7 +7,6 @@
 # - What about first and second derivatives, how quickly people fill up the rec?
 # - Fix Limitations section, there are much more professional mistakes we can cite. For example, how much of our data is statistically significant? Could lost data actually affect our results (mathematically)?
 
-
 import pandas as pd
 import pytz
 import matplotlib.pyplot as plt
@@ -32,19 +31,14 @@ df['datetime_raw'] = pd.to_datetime(
 df['datetime_raw'] = df['datetime_raw'].apply(lambda dt: dt.replace(year=2025))
 
 # Drop rows with invalid datetime
-# TODO: df still says 4660 rows, but the [] notations has shrunk
 df = df.dropna(subset=['datetime_raw'])
 
 # Correct for timezone offset (data is 3hrs 45mins ahead)
 df['datetime_est'] = df['datetime_raw'] - pd.Timedelta(hours=3, minutes=45)
 
 # Apply DST correction (data is in EST)
-# TODO: rename eastern for clarity
 eastern = pytz.timezone('America/New_York')
-# TODO: What is a 'dst'?
-# TODO: What does this do? I thought we corrected for timezone above?
 df['datetime_est_dst'] = df['datetime_est'].apply(
-    # TODO: does the variable need to be called dt (date time)?
     lambda dt: eastern.localize(dt, is_dst=False)
 )
 
@@ -57,22 +51,18 @@ df['minute'] = df['datetime_est_dst'].dt.minute
 def within_valid_hours(row):
     if row['weekday'] in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']:
         # Weekdays: 6 AM to 10 PM
-        # TODO: This works? You don't need an and keyword?
         return 6 <= row['hour'] <= 22
     else:  # Sat, Sun
         # Weekends: 10 AM to 5 PM
-        # TODO: This works? You don't need an and keyword?
         return 10 <= row['hour'] <= 17
 
-# TODO: I'm guessing this filters out data that their axis 1 data (hour)
 #   returns false for the within_valid_hours function
 df['within_hours'] = df.apply(within_valid_hours, axis=1)
 
-# TODO: How does this work? (filter out of hours entries)
+# filters out all data outside of rec hours
 df_valid = df[df['within_hours']].copy()
 
 # Convert occupancy to numeric
-# TODO: What does this do? Is this just a type cast?
 df_valid['occupancy'] = pd.to_numeric(df_valid['occupancy'], errors='coerce')
 
 ## -------------------------------------------------------------
@@ -80,11 +70,8 @@ df_valid['occupancy'] = pd.to_numeric(df_valid['occupancy'], errors='coerce')
 
 # by day of week
 weekday_order = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-# TODO: What does this do? This does nothing?
 df_valid['weekday'] = pd.Categorical(df_valid['weekday'], categories=weekday_order, ordered=True)
-# TODO: Explain how this works?
 weekday_avg = df_valid.groupby('weekday', observed=False)['occupancy'].mean()
-# TODO: This does nothing?
 weekday_avg = weekday_avg.reindex(weekday_order)
 
 plt.figure(figsize=(10, 6))
