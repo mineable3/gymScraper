@@ -18,17 +18,12 @@ matplotlib.use('TkAgg')
 
 df = pd.read_csv('cordGraph.csv')
 
-# Collect raw datetime (ignore our weekday column :( )
-# TODO: Add 2025 as the year in the argument so we don't need
-# to go back and change it with a lambda function
+# Collect raw datetime (ignore our weekday column because it will be determined later)
 df['datetime_raw'] = pd.to_datetime(
-    df['Month'] + ' ' + df['day'].astype(str) + ' ' + df['time'],
-    format='%b %d %H:%M:%S',
+    '2025 ' + df['Month'] + ' ' + df['day'].astype(str) + ' ' + df['time'],
+    format='%Y %b %d %H:%M:%S',
     errors='coerce'
 )
-
-# Set year to 2025 (needed for dst)
-df['datetime_raw'] = df['datetime_raw'].apply(lambda dt: dt.replace(year=2025))
 
 # Drop rows with invalid datetime
 df = df.dropna(subset=['datetime_raw'])
