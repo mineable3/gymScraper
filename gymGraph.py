@@ -74,6 +74,33 @@ df_valid['weekday'] = pd.Categorical(df_valid['weekday'], categories=weekday_ord
 weekday_avg = df_valid.groupby('weekday', observed=False)['occupancy'].mean()
 weekday_avg = weekday_avg.reindex(weekday_order)
 
+df_valid['day_type'] = df_valid['weekday'].apply(
+    lambda x: 'Weekday' if x in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] else 'Weekend'
+)
+
+df_valid['daily_time'] = (df['hour'] * 60.0 + df['minute']) / 60.0
+
+quarterly_by_type = df_valid.groupby(['day_type', 'daily_time'])['occupancy'].mean().unstack(level=0)
+
+plt.figure(figsize=(12, 6))
+
+if 'Weekday' in quarterly_by_type.columns:
+    plt.plot(quarterly_by_type.index, quarterly_by_type['Weekday'], 
+             marker='o', linewidth=2, label='Weekday', markersize=6)
+if 'Weekend' in quarterly_by_type.columns:
+    plt.plot(quarterly_by_type.index, quarterly_by_type['Weekend'], 
+             marker='s', linewidth=2, label='Weekend', markersize=6)
+
+plt.xlabel('Hour of Day')
+plt.ylabel('Average Occupancy')
+plt.title('Average Occupancy: Weekday vs Weekend')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.7)
+plt.xticks(range(0, 24))
+plt.tight_layout()
+plt.show()
+
+
 plt.figure(figsize=(10, 6))
 plt.bar(weekday_avg.index, weekday_avg.values, color='skyblue')
 plt.xlabel('Day of the Week')
@@ -81,7 +108,7 @@ plt.ylabel('Average Occupancy')
 plt.title('Average Occupancy by Day of the Week')
 plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.tight_layout()
-plt.show()
+# plt.show()
 
 # time of day
 hourly_avg = df_valid.groupby('hour')['occupancy'].mean()
@@ -94,7 +121,7 @@ plt.title('Average Occupancy by Hour of Day')
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.xticks(range(0, 24))
 plt.tight_layout()
-plt.show()
+# plt.show()
 
 # weekday vs weekend
 df_valid['day_type'] = df_valid['weekday'].apply(
@@ -117,23 +144,23 @@ plt.legend()
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.xticks(range(0, 24))
 plt.tight_layout()
-plt.show()
+# plt.show()
 
 # summary stats
-print("\n-- Gym Occupancy Summary --")
-print(f"Total data points: {len(df)}")
-print(f"Valid hours data points: {len(df_valid)}")
-print(f"\nOverall Statistics:")
-print(f"  Mean occupancy: {df_valid['occupancy'].mean():.1f}")
-print(f"  Median occupancy: {df_valid['occupancy'].median():.1f}")
-print(f"  Max occupancy: {df_valid['occupancy'].max():.0f}")
-print(f"  Min occupancy: {df_valid['occupancy'].min():.0f}")
-
-print(f"\nBy Day Type:")
-print(df_valid.groupby('day_type')['occupancy'].agg(['mean', 'median', 'max']))
-
-print(f"\nBusiest Hours (Top 5):")
-print(hourly_avg.sort_values(ascending=False).head())
-
-print(f"\nBusiest Days (Top 3):")
-print(weekday_avg.sort_values(ascending=False).head(3))
+#print("\n-- Gym Occupancy Summary --")
+#print(f"Total data points: {len(df)}")
+#print(f"Valid hours data points: {len(df_valid)}")
+#print(f"\nOverall Statistics:")
+#print(f"  Mean occupancy: {df_valid['occupancy'].mean():.1f}")
+#print(f"  Median occupancy: {df_valid['occupancy'].median():.1f}")
+#print(f"  Max occupancy: {df_valid['occupancy'].max():.0f}")
+#print(f"  Min occupancy: {df_valid['occupancy'].min():.0f}")
+#
+#print(f"\nBy Day Type:")
+#print(df_valid.groupby('day_type')['occupancy'].agg(['mean', 'median', 'max']))
+#
+#print(f"\nBusiest Hours (Top 5):")
+#print(hourly_avg.sort_values(ascending=False).head())
+#
+#print(f"\nBusiest Days (Top 3):")
+#print(weekday_avg.sort_values(ascending=False).head(3))
