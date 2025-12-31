@@ -2,9 +2,9 @@
 # [x] Put all function definitions at the top and all the code in a main method.
 # [x] Rounding to the nearest hour loses data, why not do a scatter plot of occupancy over time?
 # [x] What about daily averages over time, maybe there are dips during exam times?
-# [ ] Explain the mid-day (hours 12-15) slump in growth.
-# [ ] Hypothesize why the peaks in occupancy are where they are for weekday and weekends.
-# [ ] What about first and second derivatives, how quickly people fill up the rec?
+# [x] Explain the mid-day (hours 12-15) slump in growth.
+# [x] Hypothesize why the peaks in occupancy are where they are for weekday and weekends.
+# [x] What about first and second derivatives, how quickly people fill up the rec?
 # [ ] Fix Limitations section, there are much more professional mistakes we can cite. For example, how much of our data is statistically significant? Could lost data actually affect our results (mathematically)?
 
 import pandas as pd
@@ -21,10 +21,10 @@ def within_valid_hours(row):
     """ Only return true if within operating hours of the rec center """
     if row['weekday'] in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']:
         # Weekdays: 6 AM to 10 PM
-        return 6 <= row['hour'] < 22
+        return 6 <= row['hour'] < 22 or (row['hour'] == 22 and row['minute'] == 0)
     else:  # Sat, Sun
         # Weekends: 10 AM to 5 PM
-        return 10 <= row['hour'] < 17
+        return 10 <= row['hour'] < 17 or (row['hour'] == 17 and row['minute'] == 0)
 
 if __name__ == "__main__":
     df = pd.read_csv('cordGraph.csv')
@@ -205,4 +205,10 @@ if __name__ == "__main__":
 
     print(f"\nBusiest Days (Top 3):")
     print(weekday_avg.sort_values(ascending=False).head(3))
+
+    print("\n========================\n")
+
+    print("df_valid\n", df_valid.describe(), "\n")
+    print("quarterly\n", quarterly_by_type.describe(), "\n")
+    print("slopes\n", slopes.describe(), "\n")
 
