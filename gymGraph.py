@@ -97,8 +97,8 @@ if __name__ == "__main__":
         plt.plot(slopes.index, slopes['Weekend'], 
                  marker='s', linewidth=2, label='Weekend', markersize=6)
     plt.xlabel('Hour of Day')
-    plt.ylabel('Average Occupancy')
-    plt.title('Average Occupancy: Weekday vs Weekend')
+    plt.ylabel('Change in Average Occupancy')
+    plt.title('Change in Average Occupancy: Weekday vs Weekend')
     plt.legend()
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.xticks(range(0, 24))
