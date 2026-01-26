@@ -25,7 +25,11 @@
 )
 
 #set heading(numbering: "1.1.")
-#set par(justify: true)
+#set par(
+    justify: true,
+    //spacing: 2.0em,
+    //leading: 2.0em,
+)
 #set align(left)
 
 #set text(
@@ -119,6 +123,7 @@
     potential cost saving measures.
 ])
 
+#pagebreak()
 #outline()
 #pagebreak()
 
@@ -270,6 +275,15 @@ see the same periods of growth in the first graph.
     image("changeInOccupancy.png"),
     caption: [A graph of change in occupancy over time],
 ) <derivative_of_occupancy_over_time>
+
+There are two main points to draw from @derivative_of_occupancy_over_time:
+
+    1. The data is *very* noise. Higher frequency sampling would smooth out
+        the derivative graph and allow for better insights into changes in
+        the flow of people.
+    2. There is an overall downward trend. This means that the greatest growth
+        occurs at the start of the day and the amount of people entering the
+        rec at a given time decreases over time.
 
 = Conclusion
 //What is the significance of your results? – the final major section of text in
