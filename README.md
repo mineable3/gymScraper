@@ -7,6 +7,16 @@ To activate it use:
 
 To deactive it use:
 `$ deactivate`
+
+# This was the one that actually worked in my crontab
+# 2>&1 silences the script
+# ~/.venvs/selenium/bin/python is the virtual environment version of python
+# with the dependencies installed
+# >> ~/file_hole/gymScraper/output.log puts all the output of the script into the
+# log file
+# 0,15,30,45 means run every 15 minute interval
+# 0,5,10,15,20,25,30,35,40,45,50,55 is every 5 minute interval
+0,5,10,15,20,25,30,35,40,45,50,55 * * * * ~/.venvs/selenium/bin/python ~/file_hole/gymScraper/gymScraper.py >> ~/file_hole/gymScraper/output.log 2>&1
 -->
 
 # UConn Rec Center Occupancy Analysis by [David Matos](https://github.com/ILuv-2Code) & [Emmet Spaeth](https://github.com/mineable3)
