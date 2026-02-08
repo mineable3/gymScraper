@@ -21,9 +21,15 @@ To deactive it use:
 
 # UConn Rec Center Occupancy Analysis by [David Matos](https://github.com/ILuv-2Code) & [Emmet Spaeth](https://github.com/mineable3)
 
+# [Read the official paper](report.pdf)
+
 ## Overview
 
-This project analyzes occupancy data collected from the UConn Rec Center over the Fall Semester (October - December 2025), correcting for time zone differences and daylight saving time (DST). The goal is to determine trends in gym usage by weekday, weekend, and hour of the day, enabling better understanding of peak hours and facility usage patterns.
+This project analyzes occupancy data collected from the UConn Rec Center over
+the Fall Semester (October - December 2025), correcting for time zone
+differences and daylight saving time (DST). The goal is to determine trends in
+gym usage by weekday, weekend, and hour of the day, enabling better
+understanding of peak hours and facility usage patterns.
 
 ## Methodology
 
